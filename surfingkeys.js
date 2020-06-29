@@ -25,15 +25,14 @@ orgStyle = (link, title) => `[[${link}][${title}]]`
 // });
 
 mapkey('<Space>yo', "Copy as Org", ()=> Clipboard.write(orgStyle(location.href, document.title)))
-// mapkey('<Space>ymo', '保存多个 org link', ()=> {
-//     var linksToYank = [];
-//     Hints.create('*[href]', function (element) {
-//         linksToYank.push(orgStyle(element.href, element.text));
-//         Clipboard.write(linksToYank.join('\n'));
-//     }, { multipleHits: true });
-// });
+mapkey('<Space>ymo', '保存多个 org link', ()=> {
+    var result = undefined
+    Hints.create('*[href]', (element)=> {
+        Clipboard.write(result=`${result??""}${orgStyle(element.href, element.text)}\n`)
+    }, { multipleHits: true })
+});
 
-function buildOrgProtocol(action,template){
+buildOrgProtocol = (action,template) => {
     title = encodeURIComponent(document.title);
     body = encodeURIComponent(window.getSelection())
 
@@ -42,13 +41,8 @@ function buildOrgProtocol(action,template){
     console.log(url)
 }
 mapkey('<Space>c', "Org Capture：Save Link", ()=> buildOrgProtocol('capture', 'l'))
-mapkey('<Space>ymo', '保存多个 org link', function () {
-    Clipboard.write("")
-    Hints.create('*[href]'
-                 , (element)=> Clipboard.write(`${Clipboard.readText()}\n${orgStyle(element.href, element.text)}`.trim())
-                 , { multipleHits: true })})
-
 mapkey('<Space>yy', "copy you-get url", ()=> Clipboard.write(`you-get -s 127.0.0.1 ${location.href}`))
+
 // 前进 后退
 map('<Ctrl-o>', 'S');
 map('<Ctrl-i>', 'D');
@@ -57,7 +51,7 @@ map('<Ctrl-i>', 'D');
 mapkey('gS', '#12Open Chrome Extensions', function() {
     tabOpenLink("chrome://extensions/shortcuts");
 });
-    
+
 
 github_user = () => { 
     var re = /http[s]:\/\/github.com\/([^\/]+)/
@@ -98,11 +92,11 @@ function CreateAnkiCard(obj, word){
     var exp = "";
 
     try{
-	var basic_explains = res.basic.explains.map((d) => `- ${d}<br>`).join("");
-	web_explains = res.web.map((d) => `- ${d.key} :: ${d.value}<br>`).join("");
-	exp = `${res.translation} [${res.basic['us-phonetic']}]<br>* Basic Explains`;	
-	exp += `${basic_explains}`;
-	exp += `* Web ${web_explains}<br>`;
+        var basic_explains = res.basic.explains.map((d) => `- ${d}<br>`).join("");
+        web_explains = res.web.map((d) => `- ${d.key} :: ${d.value}<br>`).join("");
+        exp = `${res.translation} [${res.basic['us-phonetic']}]<br>* Basic Explains`;	
+        exp += `${basic_explains}`;
+        exp += `* Web ${web_explains}<br>`;
     }catch(e){
     }
     
@@ -124,28 +118,28 @@ mapkey("<Space>a", "Capture", ()=>{
     httpRequest({
         url: "http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&type=data&doctype=json&version=1.1&q="+word,
     },  (res) => {
-	if (! word) return;
-	var result = CreateAnkiCard(JSON.parse(res.text), word);
-	
-	if (! result) return;
+        if (! word) return;
+        var result = CreateAnkiCard(JSON.parse(res.text), word);
+        
+        if (! result) return;
 
-	var data = {
-	    "action": "addNote",
-	    "version": 6,
-	    "params": {
-		"note":{
-		    "deckName": "word",
-		    "tags": [],
-		    "modelName": "basic",
-		    "fields": {
-			"正面": word+"",
-			"背面": result
-		    }}}};
-	
-	httpRequest({
+        var data = {
+            "action": "addNote",
+            "version": 6,
+            "params": {
+                "note":{
+                    "deckName": "word",
+                    "tags": [],
+                    "modelName": "basic",
+                    "fields": {
+                        "正面": word+"",
+                        "背面": result
+                    }}}};
+        
+        httpRequest({
             url: "http://localhost:8765",
             data: JSON.stringify(data)
-	},(res)=>{Front.showPopup(res.text);});
+        },(res)=>{Front.showPopup(res.text);});
     });
 });
 
