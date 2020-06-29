@@ -52,16 +52,9 @@ mapkey('gS', '#12Open Chrome Extensions', function() {
 });
 
 
-github_user = () => { 
-    var re = /http[s]:\/\/github.com\/([^\/]+)/
-    var matches = location.href.match(re)
-    return matches ? matches[1] : "";
-}
-github_repo = () => {
-    var re = /http[s]:\/\/github.com\/([^\/]+)\/([^\/]+)/
-    var matches = location.href.match(re)
-    return matches ? matches[1] + "/" + matches[2] : "";
-}
+github_user = () => location.href.match(/http[s]:\/\/github.com\/([^\/]+)/)?.[1] ?? "" 
+github_pname = () => location.href.match(/http[s]:\/\/github.com\/[^\/]+\/([^\/]+)/)?.[1] ?? "" 
+github_repo = () => github_user() + "/" + github_pname()
 
 const github = (user, repo, query) => {
     var url = `https://github.com/`
