@@ -57,10 +57,11 @@ github_pname = () => location.href.match(/http[s]:\/\/github.com\/[^\/?]+\/([^\/
 github_repo = () => github_user() + "/" + github_pname()
 
 user = "loyalpartner"
-const github_tab = (tab) =>  goto(`https://github.com/${github_user() ?? user}?tab=${tab}`)
-const github_repo_tab = (target) => goto(`https://github.com/${github_repo()}/${target}`)
+const github = (target) => goto(`https://github.com/${target}`)
+const github_tab = (tab) => github(`${github_user() ?? user}?tab=${tab}`) 
+const github_repo_tab = (target) => github(`${github_repo()}/${target}`)
 mapkey('<Space>gh', "github",()=>github('loyalpartner'))
-mapkey('<Space>g,', "github settings",()=> github_tab("settings"))
+mapkey('<Space>g,', "github settings",()=> github("settings"))
 mapkey('<Space>go', "github overview",()=> github_tab("overview"))
 mapkey('<Space>gs', "github stars",()=> github_tab("stars"))
 mapkey('<Space>gf', "github following",()=> github_tab("following"))
