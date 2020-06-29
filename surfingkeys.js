@@ -1,28 +1,34 @@
-
 // https://github.com/brookhong/Surfingkeys/blob/master/content_scripts/normal.js#L639
 Hints.characters = 'aoeuidhtns'; 
 settings.hintAlign = "left";
-// aceVimMap('hh', '<Esc>', 'insert');
 mapkey("<Space>,","#11Edit Settings", ()=> tabOpenLink("/pages/options.html"))
 addSearchAliasX('s', 'stackoverflow', 'http://stackoverflow.com/search?q=', 'o');
 addSearchAliasX('e', 'Emacs China', 'https://emacs-china.org/search?q=', 'o');
-const goto = (url) => window.location = url;
-aceVimMap('hh', '<Esc>', 'insert');
 // const letters = "abcdefghijklmnopqrstuvwxyz";
 const letters = "aoeuidhtns";
 
-orgStyle = (link, title) => `[[${link}][${title}]]`
+const updateSettings = ()=>{
+    var reload = undefined
+    Clipboard.read(t=>{
+        if (t.data.match(/\/\/ https/)){
+            reload = true
+            RUNTIME('updateSettings', {settings: {snippets: `// cloned ${t.data}`, localPath: ""}});
+        }
+    })
+    if (reload) {
+        Clipboard.write(" ")
+        Front.showBanner('Settings saved', 300);
+    }
+}
 
-// 加载外部 js
-// mapkey('<Space>at', "Copy as Org", function() {
-//     //eval("alert('ok')");
-//     httpRequest({
-//             url: chrome.extension.getURL('/pages/default.js'),
-//         }, function(res) {
-//             eval(res.text);
-//             console.log(res);
-//         });
-// });
+mapkey("<Space>.","update settings", updateSettings)
+
+unmapAllExcept(['f', 'J', 'K'],/http[s]:\/\/github\.com/)
+"jkocs/?".split("").forEach( (t,a,b) => { unmap(t, /zhihu\.com/) })
+"jkpgu/?".split("").forEach( (t,a,b) => { unmap(t, /emacs-china\.org/) })
+
+const orgStyle = (link, title) => `[[${link}][${title}]]`
+const goto = (url) => window.location = url;
 
 mapkey('<Space>yo', "Copy as Org", ()=> Clipboard.write(orgStyle(location.href, document.title)))
 mapkey('<Space>ymo', '保存多个 org link', ()=> {
@@ -47,7 +53,7 @@ map('<Ctrl-o>', 'S');
 map('<Ctrl-i>', 'D');
 
 
-mapkey('gS', '#12Open Chrome Extensions', ()=> tabOpenLink("chrome://extensions/shortcuts"));
+// mapkey('gS', '#12Open Chrome Extensions', ()=> tabOpenLink("chrome://extensions/shortcuts"));
 
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -136,7 +142,8 @@ mapkey("<Space>a", "Capture", ()=>{
     });
 });
 
-unmapAllExcept(['f', 'J', 'K'],/github\.com/)
+
+
 
 ///////////////////////////////////////////////////////////////////////////////
 // baidu-translate
@@ -394,4 +401,3 @@ settings.theme = `
 #sk_status, #sk_find { font-size: 20pt; }`;
 // click `Save` button to make above settings to take effect.
 // click `Save` button to make above settings to take effect.
-
