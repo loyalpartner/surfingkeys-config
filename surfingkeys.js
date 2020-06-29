@@ -27,10 +27,9 @@ orgStyle = (link, title) => `[[${link}][${title}]]`
 mapkey('<Space>yo', "Copy as Org", ()=> Clipboard.write(orgStyle(location.href, document.title)))
 mapkey('<Space>ymo', '保存多个 org link', ()=> {
     var result = undefined
-    Hints.create('*[href]', (element)=> {
-        Clipboard.write(result=`${result??""}${orgStyle(element.href, element.text)}\n`)
-    }, { multipleHits: true })
-});
+    Hints.create('*[href]'
+                 , (element)=> Clipboard.write(result=`${result??""}${orgStyle(element.href, element.text)}\n`)
+                 , { multipleHits: true })})
 
 buildOrgProtocol = (action,template) => {
     title = encodeURIComponent(document.title);
