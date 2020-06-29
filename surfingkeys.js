@@ -52,31 +52,26 @@ mapkey('gS', '#12Open Chrome Extensions', function() {
 });
 
 
-github_user = () => location.href.match(/http[s]:\/\/github.com\/([^\/]+)/)?.[1] ?? "" 
-github_pname = () => location.href.match(/http[s]:\/\/github.com\/[^\/]+\/([^\/]+)/)?.[1] ?? "" 
+github_user = () => location.href.match(/http[s]:\/\/github.com\/([^\/?]+)/)?.[1] ?? undefined
+github_pname = () => location.href.match(/http[s]:\/\/github.com\/[^\/?]+\/([^\/?]+)/)?.[1] ?? undefined
 github_repo = () => github_user() + "/" + github_pname()
 
-const github = (user, repo, query) => {
-    var url = `https://github.com/`
-    if (repo) url += `${repo}`
-    else url += `${user}`
-    if (query) url += `?${query}`
-    // window.alert(url)
-    goto(url);   
-}
-mapkey('<Space>gh', "github",()=>github('loyalpartner'));
-mapkey('<Space>go', "github overview",()=>{ github_user() && github(github_user(), "" ,"tab=overview") });
-mapkey('<Space>gs', "github stars",()=>{ github_user() && github(github_user(), "" ,"tab=stars") });
-mapkey('<Space>gf', "github following",()=>{ github_user() && github(github_user(), "" ,"tab=following") });
-mapkey('<Space>gF', "github followers",()=>{ github_user() && github(github_user(), "" ,"tab=followers") });
-mapkey('<Space>gp', "github packages",()=>{ github_user() && github(github_user(), "" ,"tab=packages") });
-mapkey('<Space>gr', "github repositories",()=>{ github_user() && github(github_user(), "" ,"tab=repositories") });
-mapkey('<Space>gi', "github issues",()=>{ github_repo() && github("", github_repo() + "/issues" ,"") });
-mapkey('<Space>gw', "github issues",()=>{ github_repo() && github("", github_repo() + "/wiki" ,"") });
-mapkey('<Space>gg', "github issues",()=>{ Clipboard.write(github_repo()); });
-mapkey('<Space>ue', "emacs china",()=>goto("https://emacs-china.org"));
-mapkey('<Space>ul', "lazy cat",()=>goto("https://manateelazycat.github.io/"));
-mapkey('<Space>ux', "xah",()=>goto("http://ergoemacs.org/emacs/emacs.html"));
+user = "loyalpartner"
+const github_tab = (tab) =>  goto(`https://github.com/${github_user() ?? user}?tab=${tab}`)
+const github_repo_tab = (target) => goto(`https://github.com/${github_repo()}/${target}`)
+mapkey('<Space>gh', "github",()=>github('loyalpartner'))
+mapkey('<Space>go', "github overview",()=> github_tab("overview"))
+mapkey('<Space>gs', "github stars",()=> github_tab("stars"))
+mapkey('<Space>gf', "github following",()=> github_tab("following"))
+mapkey('<Space>gF', "github followers",()=> github_tab("followers"))
+mapkey('<Space>gp', "github packages",()=> github_tab("packages"))
+mapkey('<Space>gr', "github repositories",()=> github_tab("repositories"))
+mapkey('<Space>gi', "github issues",()=> github_repo_tab("issues"));
+mapkey('<Space>gw', "github wiki",()=> github_repo_tab("wiki"));
+mapkey('<Space>gg', "github issues",()=> Clipboard.write(github_repo()))
+mapkey('<Space>ue', "emacs china",()=>goto("https://emacs-china.org"))
+mapkey('<Space>ul', "lazy cat",()=>goto("https://manateelazycat.github.io/"))
+mapkey('<Space>ux', "xah",()=>goto("http://ergoemacs.org/emacs/emacs.html"))
 //map('<Ctrl-2>', '<Ctrl-1>');
 
 function CreateAnkiCard(obj, word){
