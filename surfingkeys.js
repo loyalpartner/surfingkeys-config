@@ -7,25 +7,11 @@ addSearchAliasX('e', 'Emacs China', 'https://emacs-china.org/search?q=', 'o');
 // const letters = "abcdefghijklmnopqrstuvwxyz";
 const letters = "aoeuidhtns";
 
-const updateSettings = ()=>{
-    var reload = undefined
-    Clipboard.read(t=>{
-        if (t.data.match(/\/\/ https/)){
-            reload = true
-            RUNTIME('updateSettings', {settings: {snippets: `// cloned ${t.data}`, localPath: ""}});
-        }
-    })
-    if (reload) {
-        Clipboard.write(" ")
-        Front.showBanner('Settings saved', 300);
-    }
-}
-
-mapkey("<Space>.","update settings", updateSettings)
-
-unmapAllExcept(['f', 'J', 'K'],/http[s]:\/\/github\.com/)
-"jkocs/?".split("").forEach( (t,a,b) => { unmap(t, /zhihu\.com/) })
-"jkpgu/?".split("").forEach( (t,a,b) => { unmap(t, /emacs-china\.org/) })
+unmapAllExcept("fJKxER ".split(""),/http[s]:\/\/github\.com/)
+unmapAllExcept("fJKxER".split(""),/emacs-china\.org/)
+unmapAllExcept("fJKxER".split(""),/zhihu\.com/)
+// "jkocs/?".split("").forEach( (t,a,b) => { unmap(t, /zhihu\.com/) })
+// "jkpgu/?".split("").forEach( (t,a,b) => { unmap(t, /emacs-china\.org/) })
 
 const orgStyle = (link, title) => `[[${link}][${title}]]`
 const goto = (url) => window.location = url;
@@ -53,6 +39,24 @@ map('<Ctrl-o>', 'S');
 map('<Ctrl-i>', 'D');
 
 
+////////////////////////////////////////////////////////////////////////////////
+// update settings
+const updateSettings = ()=>{
+    var reload = undefined
+    Clipboard.read(t=>{
+        if (t.data.match(/\/\/ https/)){
+            reload = true
+            RUNTIME('updateSettings', {settings: {snippets: `// cloned ${t.data}`, localPath: ""}});
+        }
+    })
+    if (reload) {
+        Clipboard.write(" ")
+        Front.showBanner('Settings saved', 300);
+    }
+}
+
+mapkey("<Space>.","update settings", updateSettings)
+////////////////////////////////////////////////////////////////////////////////
 // mapkey('gS', '#12Open Chrome Extensions', ()=> tabOpenLink("chrome://extensions/shortcuts"));
 
 
@@ -167,7 +171,7 @@ const translate_text = (text) => {
     httpRequest({url: url} , translate_show_result)
 }
 
-mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('p', (e)=> translate_text(e.textContent))});
+mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('p,li', (e)=> translate_text(e.textContent))});
 ///////////////////////////////////////////////////////////////////////////////
 
 Front.registerInlineQuery({
