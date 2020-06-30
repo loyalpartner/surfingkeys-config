@@ -7,11 +7,9 @@ addSearchAliasX('e', 'Emacs China', 'https://emacs-china.org/search?q=', 'o');
 // const letters = "abcdefghijklmnopqrstuvwxyz";
 const letters = "aoeuidhtns";
 
-unmapAllExcept("fJKxER ".split(""),/http[s]:\/\/github\.com/)
+unmapAllExcept(['f','x','J','K','u','d'],/http[s]:\/\/github\.com/)
 unmapAllExcept("fJKxER".split(""),/emacs-china\.org/)
-unmapAllExcept("fJKxER".split(""),/zhihu\.com/)
-// "jkocs/?".split("").forEach( (t,a,b) => { unmap(t, /zhihu\.com/) })
-// "jkpgu/?".split("").forEach( (t,a,b) => { unmap(t, /emacs-china\.org/) })
+unmapAllExcept("fJKxERud".split(""),/zhihu\.com/)
 
 const orgStyle = (link, title) => `[[${link}][${title}]]`
 const goto = (url) => window.location = url;
@@ -35,8 +33,8 @@ mapkey('<Space>c', "Org Capture：Save Link", ()=> buildOrgProtocol('capture', '
 mapkey('<Space>yd', "copy you-get url", ()=> Clipboard.write(`you-get -s 127.0.0.1 ${location.href}`))
 
 // 前进 后退
-map('<Ctrl-o>', 'S');
-map('<Ctrl-i>', 'D');
+mapkey('<Ctrl-o>', '#4Go back in history', ()=> history.go(-1), {repeatIgnore: true})
+mapkey('<Ctrl-i>', '#4Go forward in history', ()=> history.go(1), {repeatIgnore: true})
 
 
 ////////////////////////////////////////////////////////////////////////////////
