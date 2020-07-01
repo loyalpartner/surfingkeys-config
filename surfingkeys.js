@@ -131,6 +131,13 @@ mapkey('<Space>tt', 'doc switch lang', python_doc_switch_lang)
 var appid = '20200607000488675';
 var key = 'Nb_cT61hFraVEUpkvp33'
 
+var md5_text = localStorage.getItem("md5_js")
+if (!md5_text) {
+    httpRequest({url:"https://raw.githubusercontent.com/loyalpartner/surfingkeys-config/master/md5.js"},
+                (t)=> localStorage.setItem("md5_js", t.text))
+        
+}else eval(md5_text)
+
 const translate_show_result = (res) =>{
     var json = JSON.parse(res.text)
     Front.showPopup(json.trans_result.map((t)=> `<p>${t.src}</p><p>${t.dst}<p>`).join("\n"))
@@ -138,12 +145,6 @@ const translate_show_result = (res) =>{
 
 const translate_handle_query = (text)=> text.replace(/\n/g, " ").replace(/([^.]{3})\.\s+/g, "\1.\n")
 
-var md5_text = localStorage.getItem("md5_js")
-if (!md5_text) {
-    httpRequest({url:"https://raw.githubusercontent.com/loyalpartner/surfingkeys-config/master/md5.js"},
-                (t)=> localStorage.setItem("md5_js", t.text))
-        
-}else eval(md5_text)
 
 const translate_text = (text) => {
     text = translate_handle_query(text)
