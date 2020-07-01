@@ -1,4 +1,5 @@
 // https://github.com/brookhong/Surfingkeys/blob/master/content_scripts/normal.js#L639
+// ---
 Hints.characters = 'aoeuidhtns'; 
 settings.hintAlign = "left";
 mapkey("<Space>,","#11Edit Settings", ()=> tabOpenLink("/pages/options.html"))
