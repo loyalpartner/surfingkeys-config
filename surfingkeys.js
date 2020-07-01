@@ -148,9 +148,6 @@ mapkey("<Space>a", "Capture", ()=>{
     });
 });
 
-
-
-
 ///////////////////////////////////////////////////////////////////////////////
 // baidu-translate
 var appid = '20200607000488675';
@@ -395,6 +392,17 @@ var MD5 = function (string) {
     
     return temp.toLowerCase();
 }
+////////////////////////////////////////////////////////////////////////////////
+// switch doc language
+switch_lang_rules = {
+    "docs.microsoft.com": (pathname) => pathname.match(/\/zh-cn\//) ? pathname.replace("/zh-cn","/en-us") : pathname.replace("/en-us","/zh-cn"),
+    "docs.python.org":  (pathname)=> pathname.match(/\/zh-cn/) ? pathname.replace("/zh-cn", "") : "/zh-cn" + pathname
+}
+const python_doc_switch_lang = () => {
+    url = switch_lang_rules [location.host](location.pathname)
+    location.href = url
+}
+mapkey('<Space>tt', 'python doc switch lang', python_doc_switch_lang)
 ////////////////////////////////////////////////////////////////////////////////
 
 // set theme
