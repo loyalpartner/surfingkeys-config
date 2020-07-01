@@ -57,32 +57,6 @@ mapkey("<Space>.","update settings", updateSettings)
 // mapkey('gS', '#12Open Chrome Extensions', ()=> tabOpenLink("chrome://extensions/shortcuts"));
 
 
-////////////////////////////////////////////////////////////////////////////////
-
-
-function CreateAnkiCard(obj, word){
-    var res = obj;
-    var exp = "";
-
-    try{
-        var basic_explains = res.basic.explains.map((d) => `- ${d}<br>`).join("");
-        web_explains = res.web.map((d) => `- ${d.key} :: ${d.value}<br>`).join("");
-        exp = `${res.translation} [${res.basic['us-phonetic']}]<br>* Basic Explains`;	
-        exp += `${basic_explains}`;
-        exp += `* Web ${web_explains}<br>`;
-    }catch(e){
-    }
-    
-    return exp;
-}
-
-mapkey('ymt', '#7Copy multiple link URLs to the clipboard', function() {
-    var linksToYank = [];
-    Hints.create('*[href]', function(element) {
-        linksToYank.push(element.text);
-        Clipboard.write(linksToYank.join('\n'));
-    }, {multipleHits: true});
-});
 
 // org settings
 mapkey("<Space>a", "Capture", ()=>{
@@ -200,6 +174,31 @@ const translate_text = (text) => {
 }
 
 mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li', (e)=> translate_text(e.textContent))});
+////////////////////////////////////////////////////////////////////////////////
+// anki
+function CreateAnkiCard(obj, word){
+    var res = obj;
+    var exp = "";
+
+    try{
+        var basic_explains = res.basic.explains.map((d) => `- ${d}<br>`).join("");
+        web_explains = res.web.map((d) => `- ${d.key} :: ${d.value}<br>`).join("");
+        exp = `${res.translation} [${res.basic['us-phonetic']}]<br>* Basic Explains`;	
+        exp += `${basic_explains}`;
+        exp += `* Web ${web_explains}<br>`;
+    }catch(e){
+    }
+    
+    return exp;
+}
+
+mapkey('ymt', '#7Copy multiple link URLs to the clipboard', function() {
+    var linksToYank = [];
+    Hints.create('*[href]', function(element) {
+        linksToYank.push(element.text);
+        Clipboard.write(linksToYank.join('\n'));
+    }, {multipleHits: true});
+});
 var MD5 = function (string) {
   
     function RotateLeft(lValue, iShiftBits) {
@@ -400,3 +399,15 @@ var MD5 = function (string) {
   
     return temp.toLowerCase();
 }
+// set theme
+settings.theme = `
+.sk_theme { font-family: Input Sans Condensed, Charcoal, sans-serif; font-size: 10pt; background: #24272e; color: #abb2bf; }
+.sk_theme tbody { color: #fff; } .sk_theme input { color: #d0d0d0; }
+.sk_theme .url { color: #61afef; }
+.sk_theme .annotation { color: #56b6c2; }
+.sk_theme .omnibar_highlight { color: #528bff; }
+.sk_theme .omnibar_timestamp { color: #e5c07b; }
+.sk_theme .omnibar_visitcount { color: #98c379; }
+.sk_theme #sk_omnibarSearchResult>ul>li:nth-child(odd) { background: #303030; }
+.sk_theme #sk_omnibarSearchResult>ul>li.focused { background: #3e4452; }
+#sk_status, #sk_find { font-size: 20pt; }`;
