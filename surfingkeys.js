@@ -39,19 +39,23 @@ mapkey('<Ctrl-i>', '#4Go forward in history', ()=> history.go(1), {repeatIgnore:
 ////////////////////////////////////////////////////////////////////////////////
 // update settings
 const updateSettings = ()=>{
-    var reload = undefined
-    Clipboard.read(t=>{
-        if (t.data.match(/\/\/ https/)){
-            reload = true
-            RUNTIME('updateSettings', {settings: {snippets: `// cloned ${t.data}`, localPath: ""}});
-        }
-    })
-    if (reload) {
-        Clipboard.write(" ")
-        Front.showBanner('Settings saved', 300);
-    }
+    // var reload = undefined
+    // Clipboard.read(t=>{
+    //     if (t.data.match(/\/\/ https/)){
+    //         reload = true
+    //         RUNTIME('updateSettings', {settings: {snippets: `// cloned ${t.data}`, localPath: ""}});
+    //     }
+    // })
+    // if (reload) {
+    //     Clipboard.write(" ")
+    //     Front.showBanner('Settings saved', 300);
+    // }
+    
+    RUNTIME('loadSettingsFromUrl', {
+        url: "https://loyalpartner.github.io/surfingkeys-config/result.js"
+    }, function(res) {
+    });
 }
-
 mapkey("<Space>.","update settings", updateSettings)
 ////////////////////////////////////////////////////////////////////////////////
 // mapkey('gS', '#12Open Chrome Extensions', ()=> tabOpenLink("chrome://extensions/shortcuts"));
