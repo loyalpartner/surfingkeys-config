@@ -99,4 +99,5 @@ const python_doc_switch_lang = () => {
     location.href = url
 }
 mapkey('<Space>tt', 'doc switch lang', python_doc_switch_lang)
+
 ////////////////////////////////////////////////////////////////////////////////
