@@ -4,12 +4,11 @@ settings.hintAlign = "left";
 mapkey("<Space>,","#11Edit Settings", ()=> tabOpenLink("/pages/options.html"))
 addSearchAliasX('s', 'stackoverflow', 'http://stackoverflow.com/search?q=', 'o');
 addSearchAliasX('e', 'Emacs China', 'https://emacs-china.org/search?q=', 'o');
-// const letters = "abcdefghijklmnopqrstuvwxyz";
-const letters = "aoeuidhtns";
+// const letters = "aoeuidhtns";
 
-unmapAllExcept(['f','x','J','K','u','d'],/http[s]:\/\/github\.com/)
-unmapAllExcept("fJKxER".split(""),/emacs-china\.org/)
-unmapAllExcept("fJKxERud".split(""),/zhihu\.com/)
+// unmapAllExcept(['f','x','J','K','u','d'],/http[s]:\/\/github\.com/)
+
+mapkey('-', 'Toggle Blacklist', ()=> Normal.passThrough())
 
 const orgStyle = (link, title) => `[[${link}][${title}]]`
 const goto = (url) => window.location = url;
@@ -157,7 +156,7 @@ const translate_show_result = (res) =>{
     Front.showPopup(json.trans_result.map((t)=> `<p>${t.src}</p><p>${t.dst}<p>`).join("\n"))
 }
 
-const translate_handle_query = (text)=> text.replace(/\n/g, " ").replace(/\.\s+/, ".\n")
+const translate_handle_query = (text)=> text.replace(/\n/g, " ").replace(/([^.]{3})\.\s+/g, "\1.\n")
 
 const translate_text = (text) => {
     text = translate_handle_query(text)
@@ -169,25 +168,28 @@ const translate_text = (text) => {
     httpRequest({url: url} , translate_show_result)
 }
 
-mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('p,li,h1,h2,h3,h4,h5,h6', (e)=> translate_text(e.textContent))});
+mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li', (e)=> translate_text(e.textContent))});
 ///////////////////////////////////////////////////////////////////////////////
+// inline query
+const parse_translate_result = (res) => {
+    res = JSON.parse(res.text);
+    return ` ${res?.translation} [${res?.basic['us-phonetic']}]
+            <hr>
+            <div> Basic Explains
+                <ul> ${res?.basic_explains?.map((d)=>"<li>"+d+"</li>").join("\n")} </ul>
+            </div>
+            <div> Web Explains
+                <ul> ${res?.web?.map((d)=>"<li>"+d.key + " :: " + d.value + "</li>").join("\n")} </ul>
+            </div>
+            `
+}
 
 Front.registerInlineQuery({
-    //url: "",
     url: "http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&type=data&doctype=json&version=1.1&q=",
-    parseResult: (res)=> {
-        res = JSON.parse(res.text);
-        return ` ${res?.translation} [${res?.basic['us-phonetic']}]
-                <hr>
-                <div> Basic Explains
-                    <ul> ${res?.basic_explains?.map((d)=>"<li>"+d+"</li>").join("\n")} </ul>
-                </div>
-                <div> Web Explains
-                    <ul> ${res?.web?.map((d)=>"<li>"+d.key + " :: " + d.value + "</li>").join("\n")} </ul>
-                </div>
-                `
-    }});
-
+    parseResult: parse_translate_result
+});
+////////////////////////////////////////////////////////////////////////////////
+// md5.js
 var MD5 = function (string) {
     
     function RotateLeft(lValue, iShiftBits) {
@@ -388,6 +390,7 @@ var MD5 = function (string) {
     
     return temp.toLowerCase();
 }
+////////////////////////////////////////////////////////////////////////////////
 
 // set theme
 settings.theme = `
