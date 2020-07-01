@@ -112,6 +112,7 @@ Front.registerInlineQuery({
     url: "http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&type=data&doctype=json&version=1.1&q=",
     parseResult: parse_translate_result
 });
+
 // switch doc language
 switch_lang_rules = {
     "docs.microsoft.com": (pathname) => pathname.match(/\/zh-cn\//) ? pathname.replace("/zh-cn","/en-us") : pathname.replace("/en-us","/zh-cn"),
@@ -121,7 +122,7 @@ const python_doc_switch_lang = () => {
     url = switch_lang_rules [location.host](location.pathname)
     location.href = url
 }
-mapkey('<Space>tt', 'python doc switch lang', python_doc_switch_lang)
+mapkey('<Space>tt', 'doc switch lang', python_doc_switch_lang)
 ////////////////////////////////////////////////////////////////////////////////
 
 // click `Save` button to make above settings to take effect.
