@@ -100,6 +100,3 @@ const python_doc_switch_lang = () => {
 }
 mapkey('<Space>tt', 'doc switch lang', python_doc_switch_lang)
 ////////////////////////////////////////////////////////////////////////////////
-
-// click `Save` button to make above settings to take effect.
-// click `Save` button to make above settings to take effect.
