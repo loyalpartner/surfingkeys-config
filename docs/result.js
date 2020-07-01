@@ -190,14 +190,38 @@ Front.registerInlineQuery({
     url: "http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&type=data&doctype=json&version=1.1&q=",
     parseResult: parse_translate_result
 });
+// switch doc language
+switch_lang_rules = {
+    "docs.microsoft.com": (pathname) => pathname.match(/\/zh-cn\//) ? pathname.replace("/zh-cn","/en-us") : pathname.replace("/en-us","/zh-cn"),
+    "docs.python.org":  (pathname)=> pathname.match(/\/zh-cn/) ? pathname.replace("/zh-cn", "") : "/zh-cn" + pathname
+}
+const python_doc_switch_lang = () => {
+    url = switch_lang_rules [location.host](location.pathname)
+    location.href = url
+}
+mapkey('<Space>tt', 'python doc switch lang', python_doc_switch_lang)
 ////////////////////////////////////////////////////////////////////////////////
-// md5.js
+
+// set theme
+settings.theme = `
+.sk_theme { font-family: Input Sans Condensed, Charcoal, sans-serif; font-size: 10pt; background: #24272e; color: #abb2bf; }
+.sk_theme tbody { color: #fff; } .sk_theme input { color: #d0d0d0; }
+.sk_theme .url { color: #61afef; }
+.sk_theme .annotation { color: #56b6c2; }
+.sk_theme .omnibar_highlight { color: #528bff; }
+.sk_theme .omnibar_timestamp { color: #e5c07b; }
+.sk_theme .omnibar_visitcount { color: #98c379; }
+.sk_theme #sk_omnibarSearchResult>ul>li:nth-child(odd) { background: #303030; }
+.sk_theme #sk_omnibarSearchResult>ul>li.focused { background: #3e4452; }
+#sk_status, #sk_find { font-size: 20pt; }`;
+// click `Save` button to make above settings to take effect.
+// click `Save` button to make above settings to take effect.
 var MD5 = function (string) {
-    
+  
     function RotateLeft(lValue, iShiftBits) {
         return (lValue<<iShiftBits) | (lValue>>>(32-iShiftBits));
     }
-    
+  
     function AddUnsigned(lX,lY) {
         var lX4,lY4,lX8,lY8,lResult;
         lX8 = (lX & 0x80000000);
@@ -218,32 +242,32 @@ var MD5 = function (string) {
             return (lResult ^ lX8 ^ lY8);
         }
     }
-    
+  
     function F(x,y,z) { return (x & y) | ((~x) & z); }
     function G(x,y,z) { return (x & z) | (y & (~z)); }
     function H(x,y,z) { return (x ^ y ^ z); }
     function I(x,y,z) { return (y ^ (x | (~z))); }
-    
+  
     function FF(a,b,c,d,x,s,ac) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(F(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     };
-    
+  
     function GG(a,b,c,d,x,s,ac) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(G(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     };
-    
+  
     function HH(a,b,c,d,x,s,ac) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(H(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     };
-    
+  
     function II(a,b,c,d,x,s,ac) {
         a = AddUnsigned(a, AddUnsigned(AddUnsigned(I(b, c, d), x), ac));
         return AddUnsigned(RotateLeft(a, s), b);
     };
-    
+  
     function ConvertToWordArray(string) {
         var lWordCount;
         var lMessageLength = string.length;
@@ -266,7 +290,7 @@ var MD5 = function (string) {
         lWordArray[lNumberOfWords-1] = lMessageLength>>>29;
         return lWordArray;
     };
-    
+  
     function WordToHex(lValue) {
         var WordToHexValue="",WordToHexValue_temp="",lByte,lCount;
         for (lCount = 0;lCount<=3;lCount++) {
@@ -276,15 +300,15 @@ var MD5 = function (string) {
         }
         return WordToHexValue;
     };
-    
+  
     function Utf8Encode(string) {
         string = string.replace(/\r\n/g,"\n");
         var utftext = "";
-        
+  
         for (var n = 0; n < string.length; n++) {
-            
+  
             var c = string.charCodeAt(n);
-            
+  
             if (c < 128) {
                 utftext += String.fromCharCode(c);
             }
@@ -297,25 +321,25 @@ var MD5 = function (string) {
                 utftext += String.fromCharCode(((c >> 6) & 63) | 128);
                 utftext += String.fromCharCode((c & 63) | 128);
             }
-            
+  
         }
-        
+  
         return utftext;
     };
-    
+  
     var x=Array();
     var k,AA,BB,CC,DD,a,b,c,d;
     var S11=7, S12=12, S13=17, S14=22;
     var S21=5, S22=9 , S23=14, S24=20;
     var S31=4, S32=11, S33=16, S34=23;
     var S41=6, S42=10, S43=15, S44=21;
-    
+  
     string = Utf8Encode(string);
-    
+  
     x = ConvertToWordArray(string);
-    
+  
     a = 0x67452301; b = 0xEFCDAB89; c = 0x98BADCFE; d = 0x10325476;
-    
+  
     for (k=0;k<x.length;k+=16) {
         AA=a; BB=b; CC=c; DD=d;
         a=FF(a,b,c,d,x[k+0], S11,0xD76AA478);
@@ -387,35 +411,8 @@ var MD5 = function (string) {
         c=AddUnsigned(c,CC);
         d=AddUnsigned(d,DD);
     }
-    
+  
     var temp = WordToHex(a)+WordToHex(b)+WordToHex(c)+WordToHex(d);
-    
+  
     return temp.toLowerCase();
 }
-////////////////////////////////////////////////////////////////////////////////
-// switch doc language
-switch_lang_rules = {
-    "docs.microsoft.com": (pathname) => pathname.match(/\/zh-cn\//) ? pathname.replace("/zh-cn","/en-us") : pathname.replace("/en-us","/zh-cn"),
-    "docs.python.org":  (pathname)=> pathname.match(/\/zh-cn/) ? pathname.replace("/zh-cn", "") : "/zh-cn" + pathname
-}
-const python_doc_switch_lang = () => {
-    url = switch_lang_rules [location.host](location.pathname)
-    location.href = url
-}
-mapkey('<Space>tt', 'python doc switch lang', python_doc_switch_lang)
-////////////////////////////////////////////////////////////////////////////////
-
-// set theme
-settings.theme = `
-.sk_theme { font-family: Input Sans Condensed, Charcoal, sans-serif; font-size: 10pt; background: #24272e; color: #abb2bf; }
-.sk_theme tbody { color: #fff; } .sk_theme input { color: #d0d0d0; }
-.sk_theme .url { color: #61afef; }
-.sk_theme .annotation { color: #56b6c2; }
-.sk_theme .omnibar_highlight { color: #528bff; }
-.sk_theme .omnibar_timestamp { color: #e5c07b; }
-.sk_theme .omnibar_visitcount { color: #98c379; }
-.sk_theme #sk_omnibarSearchResult>ul>li:nth-child(odd) { background: #303030; }
-.sk_theme #sk_omnibarSearchResult>ul>li.focused { background: #3e4452; }
-#sk_status, #sk_find { font-size: 20pt; }`;
-// click `Save` button to make above settings to take effect.
-// click `Save` button to make above settings to take effect.
