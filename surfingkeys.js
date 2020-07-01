@@ -60,34 +60,34 @@ const updateSettingsFromUrl = ()=>{
 }
 mapkey("<Space>.","update settings", updateSettings)
 mapkey("<Space>u","update settings", updateSettingsFromUrl)
-
+////////////////////////////////////////////////////////////////////////////////
 // org settings
-mapkey("<Space>a", "Capture", ()=>{
+// mapkey("<Space>a", "Capture", ()=>{
+//     var word = window.getSelection();
+//     if (! word) return;
 
-    var word = window.getSelection();
-    request_data =
-        { url: `http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&type=data&doctype=json&version=1.1&q=${word}`}
+//     var url =  `http://fanyi.youdao.com/openapi.do?keyfrom=YouDaoCV&key=659600698&type=data&doctype=json&version=1.1&q=${word}`
+//     request_data = { url: url}
 
-    httpRequest(request_data,  (res) => {
-        if (! word) return;
-        var result = CreateAnkiCard(JSON.parse(res.text), word);
-        if (! result) return;
-        var data =
-            {
-                "action": "addNote"
-                , "version": 6
-                , "params": {
-                    "note":{
-                        "deckName": "word"
-                        , "tags": []
-                        , "modelName": "basic"
-                        , "fields": {"正面": word+"", "背面": result}
-                    }
-                }
-            };
-        httpRequest({url: "http://localhost:8765", data: JSON.stringify(data)},(res)=>{Front.showPopup(res.text);});
-    });
-});
+//     httpRequest(request_data,  (res) => {
+//         var result = CreateAnkiCard(JSON.parse(res.text), word);
+//         if (! result) return;
+//         var data =
+//             {
+//                 "action": "addNote"
+//                 , "version": 6
+//                 , "params": {
+//                     "note":{
+//                         "deckName": "word"
+//                         , "tags": []
+//                         , "modelName": "basic"
+//                         , "fields": {"正面": word+"", "背面": result}
+//                     }
+//                 }
+//             };
+//         httpRequest({url: "http://localhost:8765", data: JSON.stringify(data)},(res)=>{Front.showPopup(res.text);});
+//     });
+// });
 
 ///////////////////////////////////////////////////////////////////////////////
 // inline query
@@ -109,6 +109,7 @@ Front.registerInlineQuery({
     parseResult: parse_translate_result
 });
 
+////////////////////////////////////////////////////////////////////////////////
 // switch doc language
 switch_lang_rules = {
     "docs.microsoft.com": (pathname) => pathname.match(/\/zh-cn\//) ? pathname.replace("/zh-cn","/en-us") : pathname.replace("/en-us","/zh-cn"),
@@ -119,8 +120,6 @@ const python_doc_switch_lang = () => {
     location.href = url
 }
 mapkey('<Space>tt', 'doc switch lang', python_doc_switch_lang)
-
-////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
 // baidu-translate
