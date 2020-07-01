@@ -1,5 +1,4 @@
 // https://github.com/brookhong/Surfingkeys/blob/master/content_scripts/normal.js#L639
-// ---
 Hints.characters = 'aoeuidhtns'; 
 settings.hintAlign = "left";
 mapkey("<Space>,","#11Edit Settings", ()=> tabOpenLink("/pages/options.html"))
@@ -55,7 +54,7 @@ const updateSettings = ()=>{
 }
 const updateSettingsFromUrl = ()=>{
     RUNTIME('loadSettingsFromUrl', {
-        url: "https://loyalpartner.github.io/surfingkeys-config/result.js"
+        url: "https://loyalpartner.github.io/surfingkeys-config/result.js?" + Math.random(new Date().getMilliseconds())
     }, function(res) {
     });
 }
