@@ -37,10 +37,6 @@ mapkey('<Ctrl-i>', '#4Go forward in history', ()=> history.go(1), {repeatIgnore:
 
 
 ////////////////////////////////////////////////////////////////////////////////
-// mapkey('gS', '#12Open Chrome Extensions', ()=> tabOpenLink("chrome://extensions/shortcuts"));
-
-
-////////////////////////////////////////////////////////////////////////////////
 // update settings
 const updateSettings = ()=>{
     var reload = undefined
@@ -58,7 +54,7 @@ const updateSettings = ()=>{
 }
 const updateSettingsFromUrl = ()=>{
     RUNTIME('loadSettingsFromUrl', {
-        url: "https://loyalpartner.github.io/surfingkeys-config/result.js?" + Math.random(new Date().getMilliseconds())
+        url: "https://raw.githubusercontent.com/loyalpartner/surfingkeys-config/master/surfingkeys.js?" + Math.random(new Date().getMilliseconds())
     }, function(res) {
     });
 }
