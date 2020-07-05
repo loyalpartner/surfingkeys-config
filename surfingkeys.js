@@ -138,7 +138,7 @@ const translate_show_result = (res) =>{
     Front.showPopup(json.trans_result.map((t)=> `<p>${t.src}</p><p>${t.dst}<p>`).join("\n"))
 }
 
-const translate_handle_query = (text)=> text.replace(/\n/g, " ").replace(/([^.]{3})\.\s+/g, "\1.\n")
+const translate_handle_query = (text)=> text.replace(/\n/g, " ").replace(/\.\s+/g, ".\n")
 
 
 const translate_text = (text) => {
@@ -152,6 +152,7 @@ const translate_text = (text) => {
 }
 
 mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li,pre,blockquote', (e)=> translate_text(e.textContent))});
+mapkey('q', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li,pre,blockquote', (e)=> translate_text(e.textContent))});
 
 
 ////////////////////////////////////////////////////////////////////////////////
