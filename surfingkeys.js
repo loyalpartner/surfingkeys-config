@@ -151,7 +151,7 @@ const translate_text = (text) => {
     httpRequest({url: url} , translate_show_result)
 }
 
-mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li', (e)=> translate_text(e.textContent))});
+mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li,pre,blockquote', (e)=> translate_text(e.textContent))});
 
 
 ////////////////////////////////////////////////////////////////////////////////
