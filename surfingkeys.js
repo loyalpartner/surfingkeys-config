@@ -1,7 +1,7 @@
 // https://github.com/brookhong/Surfingkeys/blob/master/content_scripts/normal.js#L639
 Hints.characters = 'aoeuidhtns'; 
 settings.hintAlign = "left";
-mapkey("<Space>,","#11Edit Settings", ()=> tabOpenLink("/pages/options.html"))
+
 addSearchAliasX('s', 'stackoverflow', 'http://stackoverflow.com/search?q=', 'o');
 addSearchAliasX('e', 'Emacs China', 'https://emacs-china.org/search?q=', 'o');
 // const letters = "aoeuidhtns";
@@ -59,7 +59,7 @@ const updateSettingsFromUrl = ()=>{
     });
 }
 mapkey("<Space>.","update settings", updateSettings)
-mapkey("<Space>u","update settings", updateSettingsFromUrl)
+mapkey("<Space>,","update settings", updateSettingsFromUrl)
 ////////////////////////////////////////////////////////////////////////////////
 // org settings
 // mapkey("<Space>a", "Capture", ()=>{
@@ -152,6 +152,7 @@ const translate_text = (text) => {
 }
 
 mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li', (e)=> translate_text(e.textContent))});
+mapkey('q', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li', (e)=> translate_text(e.textContent))});
 
 
 ////////////////////////////////////////////////////////////////////////////////
