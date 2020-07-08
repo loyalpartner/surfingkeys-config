@@ -138,7 +138,7 @@ const translate_show_result = (res) =>{
     Front.showPopup(json.trans_result.map((t)=> `<p>${t.src}</p><p>${t.dst}<p>`).join("\n"))
 }
 
-const translate_handle_query = (text)=> text.replace(/\n/g, " ").replace(/([^.]{3})\.\s+/g, "\1.\n")
+const translate_handle_query = (text)=> text.replace(/\n/g, " ").replace(/\.\s+/g, ".\n")
 
 
 const translate_text = (text) => {
