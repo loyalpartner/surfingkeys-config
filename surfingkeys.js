@@ -152,6 +152,7 @@ const translate_text = (text) => {
 }
 
 mapkey('<Space>yy', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li', (e)=> translate_text(e.textContent))});
+vmapkey('q', 'translate', () => translate_text(getSelection().anchorNode.textContent));
 mapkey('q', 'baidu translate', ()=> {Hints.create('h1,h2,h3,h4,h5,h6,p,li', (e)=> translate_text(e.textContent))});
 
 
